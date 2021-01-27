@@ -3,12 +3,12 @@ from flask_cors import CORS
 from Model.tflite_inference import Processor
 from Model.load_abuse import abuse
 import _thread
-import os
-import redis
+#import os
+#import redis
 
 files = {}
 file_num = 0
-r = redis.from_url(os.environ['REDISCLOUD_URL'])
+#r = redis.from_url(os.environ['REDISCLOUD_URL'])
 
 app = Flask(__name__)
 path = "/app/Model/"
@@ -57,12 +57,12 @@ def get_data():
         del files[data]
         return {"response": "success", "data": sendData}
 
-@app.route('/test')
-def test():
-    r.set('a', '1')
-    r.set('b', '2')
+# @app.route('/test')
+# def test():
+#     r.set('a', '1')
+#     r.set('b', '2')
 
-    return len(r), 200
+#     return len(r), 200
 
 if __name__ == "__main__":
     app.run(port=3000, host="0.0.0.0", debug=True)
