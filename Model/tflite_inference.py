@@ -176,6 +176,8 @@ class Processor:
     def get_prediction(self, data):
         data = self.preprocess(data)
 
+        new_data = []
+
         for d in data:
             raw = d.pop('raw')
             self.interpreter.set_tensor(self.input_details[0]['index'], raw)
@@ -183,8 +185,11 @@ class Processor:
             output_data = self.interpreter.get_tensor(self.output_details[0]['index'])
             predictions = dict(zip(self.labels, output_data[0].tolist()))
             d.update({'predictions': predictions, 'p': 1 if max(predictions.values()) > self.thresh else 0})
+            
+            if d['p'] == 1:
+                new_data.append(d)
 
-        return data
+        return new_data
 
 if __name__ == "__main__":
     data = [{'id': '0', 'data': ['Fuck', 'this', 'world']}, {'id': '1', 'data': ['He', 'is', 'cute']}]
